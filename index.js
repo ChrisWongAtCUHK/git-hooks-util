@@ -37,21 +37,37 @@ if(!args[1] || args[1] === 'init') {
 				// 1. read files in .git/hooks
 				//		* if exists, append to the end
 				//		* if hook does not exist, copy multiple-git-hooks.sh
+				// https://git-scm.com/docs/githooks
 				const hooks = [
 						'applypatch-msg',
-						'commit-msg',
-						'fsmonitor-watchman',
-						'post-update',
 						'pre-applypatch',
+						'post-applypatch',
 						'pre-commit',
-						'pre-push',
-						'pre-rebase',
-						'pre-receive',
+						'pre-merge-commit',
 						'prepare-commit-msg',
-						'update'
+						'commit-msg',
+						'post-commit',
+						'pre-rebase',
+						'post-checkout',
+						'post-merge',
+						'pre-push',
+						'pre-receive',
+						'update',
+						'post-receive',
+						'post-update',
+						'push-to-checkout',
+						'pre-auto-gc',
+						'post-rewrite',
+						'rebase',
+						'sendemail-validate',
+						'fsmonitor-watchman',
+						'p4-pre-submit',
+						'post-index-change'
 				]
 				const scripText = fs
 					.readFileSync(`${__dirname}/template/multiple-git-hooks.sh`)
+
+				let sample = ''
 
 				for(let hook of hooks) {
 					const hookFile = `${hooksPath}/${hook}`
@@ -63,10 +79,11 @@ if(!args[1] || args[1] === 'init') {
 					} else {
 						// not exist, creat
 						if(fs.existsSync(`${hookFile}.sample`)) {
-							// copy sample if any to
-							//		avoid permission modification
-							fs.copyFileSync(`${hookFile}.sample`, hookFile)
+							sample = `${hookFile}.sample`
 						}
+						// copy sample if any to
+						//		avoid permission modification
+						fs.copyFileSync(sample, hookFile)
 						fs.writeFileSync(hookFile, `#!/bin/sh\n${scripText}`)
 						log(`${hookFile} is created.`)
 					}
