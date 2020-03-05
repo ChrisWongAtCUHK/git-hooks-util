@@ -2,5 +2,34 @@
   "name": "git-hooks-util",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "bin": {
+    "ghu": "./index.js"
+  },
+  "husky": {
+    "hooks": {
+	  "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "license": "ISC",
+  "keywords": [
+    "git",
+    "pre-push"
+  ],
+  "author": "Chris Wong <wc38.wong@gmail.com>",
+  "dependencies": {},
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8"
+  }
 }
