@@ -38,7 +38,7 @@ if(!args[1] || args[1] === 'init') {
 				//		* if exists, append to the end
 				//		* if hook does not exist, copy multiple-git-hooks.sh
 				const hooks = [
-						'applypatVch-msg',
+						'applypatch-msg',
 						'commit-msg',
 						'fsmonitor-watchman',
 						'post-update',
@@ -61,7 +61,12 @@ if(!args[1] || args[1] === 'init') {
 						fs.appendFileSync(hookFile, scripText)
 						log(`${hookFile} is modified.`)
 					} else {
-						// not exist, create
+						// not exist, creat
+						if(fs.existsSync(`${hookFile}.sample`)) {
+							// copy sample if any to
+							//		avoid permission modification
+							fs.copyFileSync(`${hookFile}.sample`, hookFile)
+						}
 						fs.writeFileSync(hookFile, `#!/bin/sh\n${scripText}`)
 						log(`${hookFile} is created.`)
 					}
