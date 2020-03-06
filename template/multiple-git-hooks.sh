@@ -11,7 +11,6 @@ if [[ -d $hook_dir ]]; then
   stdin=$(cat /dev/stdin)
 
   for hook in $hook_dir/*; do
-    echo "Running $hook_name/$hook hook"
     echo "$stdin" | $hook "$@"
 
     exit_code=$?

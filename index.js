@@ -20,12 +20,18 @@ if(args[0].endsWith('/node')) {
 if(!args[1] || args[1] === 'init') {
 	// if .git folder does not exist exit
 	if(fs.existsSync('.git')) {
-		if(fs.existsSync('.githooks')) {
+		// folder to hold the scripts
+		const hooksDir = '.githooks'
+
+		if(fs.existsSync(hooksDir)) {
 			error('.githooks exists, abort initialization.')
 		} else {
+			// 1. create folder .githooks
+			fs.mkdirSync(hooksDir)
+			log(`${hooksDir} folder is created.`)
+			// 2. get `hooksPath` in ~/.gitconfig(global) or .git/config(local)
 			let hooksPath = ''
 
-			// 1. get `hooksPath` in ~/.gitconfig(global) or .git/config(local)
 			getPath.stdout.on('data', (data) => {
 				// get hooksPath
 				hooksPath = data
@@ -34,7 +40,7 @@ if(!args[1] || args[1] === 'init') {
 				// if not set, use default
 				hooksPath = hooksPath ? hooksPath : '.git/hooks'
 
-				// 1. read files in .git/hooks
+				// 3. read files in .git/hooks
 				//		* if exists, append to the end
 				//		* if hook does not exist, copy multiple-git-hooks.sh
 				// https://git-scm.com/docs/githooks
@@ -66,8 +72,9 @@ if(!args[1] || args[1] === 'init') {
 				]
 				const scripText = fs
 					.readFileSync(`${__dirname}/template/multiple-git-hooks.sh`)
-
-				let sample = ''
+				const hookScript = fs
+					.readFileSync(`${__dirname}/template/.githooks/hook.sh`)
+				let sample = 'applypatch-msg.sample'
 
 				for(let hook of hooks) {
 					const hookFile = `${hooksPath}/${hook}`
@@ -87,15 +94,14 @@ if(!args[1] || args[1] === 'init') {
 						fs.writeFileSync(hookFile, `#!/bin/sh\n${scripText}`)
 						log(`${hookFile} is created.`)
 					}
+					// create sub-folder in .githooks
+					fs.mkdirSync(`${hooksDir}/${hook}`)
+					// e.g. .git/hooks/pre-commit .githooks/pre-commit/hook.sh
+					fs.copyFileSync(hookFile, `${hooksDir}/${hook}/hook.sh`)
+					fs.writeFileSync(
+						`${hooksDir}/${hook}/hook.sh`, hookScript
+					)
 				}
-				// 1. create folder .githooks
-				fs.mkdir('.githooks', (err) => {
-					if(err) {
-						error(err)
-						process.exit(1)
-					}
-					log('.githooks folder is created.')
-				})
 			})
 		}
 	} else {

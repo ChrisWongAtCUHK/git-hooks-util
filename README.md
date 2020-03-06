@@ -17,7 +17,7 @@ ghu [init]
 ## What it is doing 
 1. read files in .git/hooks  
 	* if hook does not exist, copy multiple-git-hooks.sh
-	* if exists, append to the end
+	* if exists, append to the end(assumed the shebang is /bin/sh)
 2. create folder .githooks
 3. create template in .githooks
 4. examples folder
