@@ -11,7 +11,9 @@ npm i git-hooks-util -g
 ```
 or
 ### Install as a dependency
+```
 npm i git-hooks-util --save-dev
+```
 
 > If you install it as a dependency, it will automatically init the module after installing
 
