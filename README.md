@@ -5,9 +5,15 @@
 * [multiple-git-hooks.sh](https://gist.github.com/mjackson/7e602a7aa357cfe37dadcc016710931b)
 
 ## Installation
+### Install it globally
 ```
-npm install git-hooks-utl -g
+npm i git-hooks-util -g
 ```
+or
+### Install as a dependency
+npm i git-hooks-util --save-dev
+
+> If you install it as a dependency, it will automatically init the module after installing
 
 ## Usage
 ```
