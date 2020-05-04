@@ -6,7 +6,7 @@
 
 ## Installation
 ```
-npm install git-hooks-utl -g
+npm install git-hooks-util -g
 ```
 
 ## Usage
