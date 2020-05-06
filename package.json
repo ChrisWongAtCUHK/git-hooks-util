@@ -11,6 +11,7 @@
   "bin": {
     "ghu": "./index.js"
   },
+  "postinstall": "npm start",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
