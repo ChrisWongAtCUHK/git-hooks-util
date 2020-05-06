@@ -6,6 +6,7 @@ const error = console.error
 /* eslint-disable no-console */
 
 const fs = require('fs')
+const path = require('path')
 const { spawn } = require('child_process')
 const getPath = spawn('git', ['config', 'core.hooksPath'])
 
@@ -16,8 +17,15 @@ if(args[0].endsWith('/node')) {
 	args = args.slice(1)
 }
 
+// postinstall, `npm install git-hooks-util --save-dev`
+let postinstall = args[1] && args[1] === 'postinstall'
+
 // ghu [init]
-if(!args[1] || args[1] === 'init') {
+if(!args[1] || args[1] === 'init' || postinstall) {
+	if(postinstall) {
+		process.chdir(path.join(__dirname, '../../'))
+	}
+
 	// if .git folder does not exist exit
 	if(fs.existsSync('.git')) {
 		// folder to hold the scripts

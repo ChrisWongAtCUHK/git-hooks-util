@@ -1,12 +1,13 @@
 {
   "name": "git-hooks-util",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "https://github.com/ChrisWongAtCUHK/git-hooks-util",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+	"postinstall": "node ./index.js postinstall"
   },
   "bin": {
     "ghu": "./index.js"
